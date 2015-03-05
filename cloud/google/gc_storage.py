@@ -343,23 +343,23 @@ def main():
             expiration     = dict(default=600, aliases=['expiry']),
             mode           = dict(choices=['get', 'put', 'delete', 'create', 'get_url', 'get_str'], required=True),
             permission     = dict(choices=['private', 'public-read', 'authenticated-read'], default='private'),
-            gs_secret_key  = dict(no_log=True, required=True),
-            gs_access_key  = dict(required=True),
+            gcs_secret_key = dict(no_log=True, required=True),
+            gcs_access_key = dict(required=True),
             overwrite      = dict(default=True, type='bool', aliases=['force']),
         ),
     )
 
-    bucket        = module.params.get('bucket')
-    obj           = module.params.get('object')
-    src           = module.params.get('src')
-    dest          = module.params.get('dest')
+    bucket         = module.params.get('bucket')
+    obj            = module.params.get('object')
+    src            = module.params.get('src')
+    dest           = module.params.get('dest')
     if dest:
-        dest      = os.path.expanduser(dest)
-    mode          = module.params.get('mode')
-    expiry        = module.params.get('expiration')
-    gs_secret_key = module.params.get('gs_secret_key')
-    gs_access_key = module.params.get('gs_access_key')
-    overwrite     = module.params.get('overwrite')
+        dest       = os.path.expanduser(dest)
+    mode           = module.params.get('mode')
+    expiry         = module.params.get('expiration')
+    gcs_secret_key = module.params.get('gcs_secret_key')
+    gcs_access_key = module.params.get('gcs_access_key')
+    overwrite      = module.params.get('overwrite')
 
     if mode == 'put':
         if not src or not object:
@@ -371,7 +371,7 @@ def main():
         obj = os.path.expanduser(module.params['object'])
 
     try:
-        gs = boto.connect_gs(gs_access_key, gs_secret_key)
+        gs = boto.connect_gs(gcs_access_key, gcs_secret_key)
     except boto.exception.NoAuthHandlerFound, e:
         module.fail_json(msg = str(e))
  
